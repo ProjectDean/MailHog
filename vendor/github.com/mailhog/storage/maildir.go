@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
+    "sort"
 	"github.com/mailhog/data"
 )
 
@@ -144,6 +144,12 @@ func (maildir *Maildir) List(start, limit int) (*data.Messages, error) {
 		if err != nil {
 			return nil, err
 		}
+
+        // sort fix from https://github.com/mailhog/MailHog/pull/367/commits/7c080a939923a47df6bfd5ba705a807839e5c250
+        sort.Slice(n, func(i, j int) bool {
+          return  n[i].ModTime().After(n[j].ModTime())
+        })
+
 		msg := data.FromBytes(b)
 		// FIXME domain
 		m := *msg.Parse("mailhog.example")

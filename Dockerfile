@@ -9,7 +9,8 @@ RUN apk --no-cache add --virtual build-dependencies \
     git \
   && mkdir -p /root/gocode \
   && export GOPATH=/root/gocode \
-  && go install github.com/mailhog/MailHog@latest
+# getting the latest fixed version of a fork of the original MailHog
+  && go install github.com/ProjectDean/MailHog@latest
 
 FROM alpine:3
 # Add mailhog user/group with uid/gid 1000.
